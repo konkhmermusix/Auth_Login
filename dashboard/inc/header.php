@@ -9,25 +9,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     exit;
 }
 
-
-$conn->query("UPDATE notifications SET is_read = 1 WHERE is_read = 0");
-
 $page = basename($_SERVER['PHP_SELF'], '.php');
 $pageTitle = ucwords(str_replace('-', ' ', $page));
 
-
-$unread = $conn->query("
-    SELECT COUNT(*) AS total
-    FROM notifications
-    WHERE is_read = 0
-")->fetch_assoc();
-
-$notifications = $conn->query("
-    SELECT *
-    FROM notifications
-    ORDER BY created_at DESC
-    LIMIT 10
-");
 
 ?>
 <!DOCTYPE html>
@@ -242,11 +226,9 @@ $notifications = $conn->query("
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary position-relative" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <?php if ($unread['total'] > 0): ?>
-                            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
-                                <?= $unread['total'] ?>
-                            </span>
-                        <?php endif; ?>
+                        <span class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                            2
+                        </span>
                     </button>
 
                 </div>
@@ -256,6 +238,9 @@ $notifications = $conn->query("
                         <i class="bi bi-person-circle"></i> Admin
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="accountDropdown">
+                        <li class="">
+                            <a class="dropdown-item" href="#">Profile</a>
+                        </li>
                         <li class="">
                             <a class="dropdown-item" href="../index.php">Go Website</a>
                         </li>
